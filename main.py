@@ -54,16 +54,14 @@ def commands_messages(message):
 
         elif message.text == '/your_stat@carmas_bot':
             crm = db.db_select(message.chat.id, message.from_user.id,
-                               ['carma'])
-            if match(r'^relation.+', str(crm)) or not crm:
+                               ['carma', 'name'])
+            if re.match(r'^relation.+', str(crm)) or not crm:
                 return
             bot.send_message(
                 message.chat.id,
                 "[{user_name}](tg://user?id={user_id}), "
                 "твоя текущая карма {crm}".format(
-                    user_name=(message.from_user.username
-                               if message.from_user.username
-                               else message.from_user.id),
+                    user_name=crm[0][1],
                     user_id=message.from_user.id,
                     crm=crm[0][0]
                 ),
